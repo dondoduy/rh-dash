@@ -9,7 +9,11 @@ var ApiUtils = {
         });
     },
     fetchResponse: function(url, settings){
-        return fetch(url, settings)
+        var init = Object.assign({headers: new Headers({
+                'Content-Type': 'application/json',
+                'authorization': 'Token ' + localStorage.getItem("sessionToken")
+        })}, settings);
+        return fetch(url, init)
         .then(this.checkStatus)
         .then(response => response.json());
     }

@@ -7,6 +7,7 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
+            fname: 'none',
             error: null
         }
     }
@@ -18,15 +19,12 @@ class Login extends Component {
         let url = 'http://localhost:8080/api/login/';
         let settings = {
             method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            }),
             body: JSON.stringify({ username: username, password: password })
         };
 
         ApiUtils.fetchResponse(url, settings)
             .then(json => {
-                this.props.handleLogin({ name: username }, json.token);
+                _this.props.handleLogin({ name: username }, json.token);
             })
             .catch(error => {
                 var key;
@@ -36,10 +34,10 @@ class Login extends Component {
                         errors = errors + key + ' = ' + error[key];
                     }
                 }
-
                 _this.setState({ error: errors });
-            });
+            });    
     }
+
 
     render() {
         return (
@@ -49,7 +47,7 @@ class Login extends Component {
                 Password:
         <input type="password" ref="pword" />
                 <button onClick={this.handleClick}>Login</button>
-                {this.state.error}
+                {this.state.error} - {this.state.fname}
             </div>
         );
     }
