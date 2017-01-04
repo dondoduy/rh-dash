@@ -24,7 +24,7 @@ class Login extends Component {
 
         ApiUtils.fetchResponse(url, settings)
             .then(json => {
-                _this.props.handleLogin({ name: username }, json.token);
+               return _this.props.handleLogin({ name: username }, json.token);
             })
             .catch(error => {
                 let errors = ApiUtils.parseErrorStrings(error);
@@ -37,9 +37,9 @@ class Login extends Component {
         return (
             <div className="Login">
                 Username:
-        <input type="text" ref="uname" />
+        <input type="text" ref="uname" defaultValue=""/>
                 Password:
-        <input type="password" ref="pword" />
+        <input type="password" ref="pword" defaultValue=""/>
                 <button onClick={this.handleClick}>Login</button>
                 {this.state.error} - {this.state.fname}
             </div>
