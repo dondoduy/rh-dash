@@ -27,15 +27,9 @@ class Login extends Component {
                 _this.props.handleLogin({ name: username }, json.token);
             })
             .catch(error => {
-                var key;
-                let errors = '';
-                for (key in error) {
-                    if (error.hasOwnProperty(key)) {
-                        errors = errors + key + ' = ' + error[key];
-                    }
-                }
+                let errors = ApiUtils.parseErrorStrings(error);
                 _this.setState({ error: errors });
-            });    
+            });
     }
 
 
