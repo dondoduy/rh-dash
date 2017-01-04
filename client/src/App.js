@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import ApiUtils from './utils/ApiUtils';
-import Header from './components/Header';
+import Header from './components/header/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 

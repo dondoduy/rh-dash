@@ -77,13 +77,34 @@ router.get('/headerInfo', function (req, res) {
 					account_number: results[1].results[0].account_number,
 					cash: results[1].results[0].cash,
 					cash_available_for_withdrawal: results[1].results[0].cash_available_for_withdrawal,
-					unclear_deposits: results[1].results[0].unclear_deposits,
+					uncleared_deposits: results[1].results[0].uncleared_deposits,
 					unsettled_funds: results[1].results[0].unsettled_funds,
 					buying_power: results[1].results[0].buying_power
+				},
+				urls: {
+
 				}
 			});
 		});
 });
+
+// router.get('/portfolio', function (req, res) {
+// 	var url = apiBase + 'portfolio/';
+// 	var headers = { 'authorization': req.header('authorization') };
+// 	request({ headers: headers, uri: url, method: 'GET' },
+// 		function (error, response, body) {
+// 			if(error) { console.log(error); res.send(500, error); return;}
+// 			console.log(body);
+// 			obj = JSON.parse(body);
+// 			res.send({
+// 				portfolio: {
+// 					market_value: obj.market_value,
+// 					equity: obj.equity,
+// 					extended_hours_market_value: obj.extended_hours_market_value
+// 				}
+// 			});
+// 		});
+// });
 
 router.get('/', function (req, res) {
 	res.json({ message: 'API GET works' });
