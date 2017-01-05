@@ -44,6 +44,7 @@ class App extends Component {
         {this.state.user &&
           <Header handleLogout={this.handleLogout} />
         }
+        {!this.state.user && <Header handleLogout={this.handleLogout} />}
         {this.state.user && <Dashboard />}
         {!this.state.user &&
           <Login handleLogin={this.handleLogin} />
