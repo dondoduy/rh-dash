@@ -5,9 +5,6 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
-            fname: 'none',
             error: null
         }
     }
@@ -24,7 +21,7 @@ class Login extends Component {
 
         ApiUtils.fetchResponse(url, settings)
             .then(json => {
-                _this.props.handleLogin({ name: username }, json.token);
+                _this.props.handleLogin(json.token);
             })
             .catch(error => {
                 let errors = ApiUtils.parseErrorStrings(error);
@@ -36,12 +33,10 @@ class Login extends Component {
     render() {
         return (
             <div className="Login">
-                Username:
-        <input type="text" ref="uname" />
-                Password:
-        <input type="password" ref="pword" />
+                Username: <input type="text" ref="uname" />
+                Password: <input type="password" ref="pword" />
                 <button onClick={this.handleClick}>Login</button>
-                {this.state.error} - {this.state.fname}
+                <div dangerouslySetInnerHTML={this.state.error}/>
             </div>
         );
     }
