@@ -1,3 +1,8 @@
+const apiBase = 
+(process.env.NODE_ENV === 'production') ?
+ 'http://localhost:8080/api' : 
+ 'http://localhost:8080/api';
+
 var ApiUtils = {
     checkStatus: function (response) {
         if (response.ok) {
@@ -9,13 +14,14 @@ var ApiUtils = {
         });
     },
     fetchResponse: function (url, settings) {
+        var newUrl = `${apiBase}/${url}`;
         var init = Object.assign({
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'authorization': 'Token ' + localStorage.getItem("sessionToken")
             })
         }, settings);
-        return fetch(url, init)
+        return fetch(newUrl, init)
             .then(this.checkStatus)
             .then(response => response.json());
     },

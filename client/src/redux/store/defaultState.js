@@ -1,6 +1,6 @@
 const defaultValues = () => {
   return {
-    token: localStorage.getItem('sessionToken') || '',
+    token: localStorage.getItem('sessionToken') || null,
     isFetching: false,
     error: '',
     user: {

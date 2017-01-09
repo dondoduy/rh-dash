@@ -1,41 +1,21 @@
 import React, { Component } from 'react';
-//import ApiUtils from '../utils/ApiUtils';
+import { connect } from 'react-redux';
+import * as tokenActions from '../redux/actions/token';
 
 class Login extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
         this.state = {
-            username: '',
-            password: '',
-            fname: 'none',
-            error: null
         }
     }
+    handleClick = () => {
+        let loginInfo = {
+            username: this.refs.uname.value,
+            password: this.refs.pword.value
+        };
 
-    handleClick = (e) => {
-       // let _this = this;
-        let username = this.refs.uname.value;
-        let password = this.refs.pword.value;
-
-        this.props.handleLogin({username: username, password: password}, 'token');
-
-
-        // let url = 'http://localhost:8080/api/login/';
-        // let settings = {
-        //     method: 'POST',
-        //     body: JSON.stringify({ username: username, password: password })
-        // };
-
-        // ApiUtils.fetchResponse(url, settings)
-        //     .then(json => {
-        //         _this.props.handleLogin({ name: username }, json.token);
-        //     })
-        //     .catch(error => {
-        //         let errors = ApiUtils.parseErrorStrings(error);
-        //         _this.setState({ error: errors });
-        //     });
+        return this.props.dispatch(tokenActions.login(loginInfo));
     }
-
 
     render() {
         return (
@@ -52,4 +32,15 @@ class Login extends Component {
     }
 }
 
-export default Login;
+function mapStateToProps(state) {
+    let { token, isFetching, error, user } = state;
+
+    return {
+        token,
+        isFetching,
+        error,
+        user: user,
+    }
+}
+
+export default connect(mapStateToProps)(Login);
