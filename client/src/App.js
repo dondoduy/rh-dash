@@ -11,7 +11,7 @@ class App extends Component {
 
   handleLogin = (user, token) => {
     localStorage.setItem("sessionToken", token);
-    this.props.dispatch(tokenActions.loginRequested);
+    this.props.dispatch(tokenActions.login(user));
     //this.setState({ user: { name: user.name }, error: null });
   }
 

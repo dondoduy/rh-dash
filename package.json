@@ -1,0 +1,31 @@
+{
+  "name": "rh-dash",
+  "version": "1.0.0",
+  "description": "A web based dashboard for the Robinhood stock trading platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"nodemon server.js\" \"cd client && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WesJones127/rh-dash.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WesJones127/rh-dash/issues"
+  },
+  "homepage": "https://github.com/WesJones127/rh-dash#readme",
+  "devDependencies": {
+    "concurrently": "^3.1.0"
+  },
+  "dependencies": {
+    "async": "^2.1.4",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "fetch": "^1.1.0",
+    "nodemon": "^1.11.0",
+    "request": "^2.79.0"
+  }
+}
