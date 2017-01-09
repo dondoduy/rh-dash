@@ -1,0 +1,56 @@
+.App-header {
+  background-color: #21CE99;
+  height: 150px;
+  margin: 0;
+  padding: 20px;
+  color: #D7E2E5;
+  display: flex;
+  flex-basis: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-cash {
+    /*border: 1px solid white;*/
+    font-size: 11px;
+    flex-basis: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.header-name {
+    /*border: 1px solid white;*/
+    flex-basis: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header-portfolio {
+    /*border: 1px solid white;*/
+    font-size: 11px;
+    flex-basis: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.row {
+    /*border: 1px solid white;*/
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.val {
+    /*border: 1px solid white;*/
+    text-align: right;
+    min-width: 75px;
+    max-width: 75px;
+}

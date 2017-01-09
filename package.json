@@ -1,0 +1,21 @@
+{
+  "name": "root-start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WesJones127/rh-dash.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WesJones127/rh-dash/issues"
+  },
+  "homepage": "https://github.com/WesJones127/rh-dash#readme"
+}
