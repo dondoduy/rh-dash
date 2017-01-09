@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import ApiUtils from './utils/ApiUtils';
-import Header from './components/header/Header';
+import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
@@ -41,13 +41,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.user &&
-          <Header handleLogout={this.handleLogout} />
-        }
-        {!this.state.user && <Header handleLogout={this.handleLogout} />}
+        <Header handleLogout={this.handleLogout} />
         {this.state.user && <Dashboard />}
         {!this.state.user &&
-          <Login handleLogin={this.handleLogin} />
+          <Login handleLogin={() => this.handleLogin} />
         }
       </div>
     );

@@ -41,7 +41,8 @@ class Login extends Component {
                 Password:
         <input type="password" ref="pword" />
                 <button onClick={this.handleClick}>Login</button>
-                {this.state.error} - {this.state.fname}
+                <br />
+                {this.state.error}
             </div>
         );
     }
