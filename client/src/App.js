@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as tokenActions from './redux/actions/token';
 import './App.css';
 import ApiUtils from './utils/ApiUtils';
 import Header from './components/Header';
@@ -6,17 +8,11 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      user: null,
-      error: null
-    };
-  }
 
   handleLogin = (user, token) => {
     localStorage.setItem("sessionToken", token);
-    this.setState({ user: { name: user.name }, error: null });
+    this.props.dispatch(tokenActions.loginRequested);
+    //this.setState({ user: { name: user.name }, error: null });
   }
 
   handleLogout = () => {
@@ -42,13 +38,24 @@ class App extends Component {
     return (
       <div className="App">
         <Header handleLogout={this.handleLogout} />
-        {this.state.user && <Dashboard />}
-        {!this.state.user &&
-          <Login handleLogin={() => this.handleLogin} />
+        {this.props.token && <Dashboard />}
+        {this.props.token !== '' &&
+          <Login handleLogin={this.handleLogin} />
         }
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  let { token, isFetching, error, user } = state;
+
+  return {
+    token,
+    isFetching,
+    error,
+    user: user,
+  }
+}
+
+export default connect(mapStateToProps)(App);
