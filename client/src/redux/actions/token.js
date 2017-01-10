@@ -22,10 +22,13 @@ export function login(loginInfo) {
         return ApiUtils.fetchResponse(url, settings)
             .then(json => {
                 console.log('dispatching login success, token: ' + json.token);
-                dispatch(loginSuccess, json.token);
+                localStorage.setItem('sessionToken', json.token);
+                return dispatch(loginSuccess, json.token);
             })
             .catch(err => {
-                dispatch(loginFailure, ApiUtils.parseErrorStrings(err));
+                console.log('dispatching login failure, error: ' + ApiUtils.parseErrorStrings(err));
+                localStorage.removeItem('sessionToken');
+                return dispatch(loginFailure, ApiUtils.parseErrorStrings(err));
             });
     };
 }
@@ -39,6 +42,7 @@ export const logoutFailure = createAction(LOGOUT_FAILURE);
 
 export function logout() {
     return dispatch => {
+        console.log('dispatching logout requested');
         dispatch(logoutRequested);
 
         let url = 'logout';
@@ -46,12 +50,15 @@ export function logout() {
             method: 'POST',
         };
 
-        ApiUtils.fetchResponse(url, settings)
+        return ApiUtils.fetchResponse(url, settings)
             .then(json => {
-                dispatch(logoutSuccess);
+                console.log('dispatching logout success');
+                localStorage.removeItem('sessionToken');
+                return dispatch(logoutSuccess);
             })
             .catch(err => {
-                dispatch(logoutFailure, ApiUtils.parseErrorStrings(err));
+                localStorage.removeItem('sessionToken');
+                return dispatch(logoutFailure, ApiUtils.parseErrorStrings(err));
             });
     };
 }

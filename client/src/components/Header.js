@@ -1,40 +1,40 @@
 import React, { Component } from 'react';
-import ApiUtils from '../utils/ApiUtils';
+import { connect } from 'react-redux';
+import * as tokenActions from '../redux/actions/token';
 
 class Header extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            user: {
-                name: 'test'
-            }
-        };
-    }
-
-    componentDidMount() {
-        if (this.props.token) {
-            this.getUser();
         }
     }
 
-    getUser = () => {
-        let _this = this;
-        let url = 'http://localhost:8080/api/user/';
-        let settings = {
-            method: 'GET'
-        };
+    // componentDidMount() {
+    //     if (this.props.token) {
+    //         this.getUser();
+    //     }
+    // }
 
-        ApiUtils.fetchResponse(url, settings)
-            .then(json => {
-                _this.setState({ user: { name: json.first_name + ' ' + json.last_name } });
-            })
-            .catch(error => {
-                let errors = ApiUtils.parseErrorStrings(error);
-                _this.setState({ error: errors });
-            });
+    // getUser = () => {
+    //     let _this = this;
+    //     let url = 'http://localhost:8080/api/user/';
+    //     let settings = {
+    //         method: 'GET'
+    //     };
+
+    //     ApiUtils.fetchResponse(url, settings)
+    //         .then(json => {
+    //             _this.setState({ user: { name: json.first_name + ' ' + json.last_name } });
+    //         })
+    //         .catch(error => {
+    //             let errors = ApiUtils.parseErrorStrings(error);
+    //             _this.setState({ error: errors });
+    //         });
+    // }
+
+    handleLogoutClick = () => {
+        return this.props.dispatch(tokenActions.logout());
     }
-
-
 
     render() {
         return (
@@ -43,11 +43,22 @@ class Header extends Component {
                     <h2>Welcome</h2>
                 </div>
                 <div>
-                    <a onClick={this.props.handleLogout}>Logout</a>
+                    <a onClick={this.handleLogoutClick}>Logout</a>
                 </div>
             </div>
         );
     }
 }
 
-export default Header;
+function mapStateToProps(state) {
+    let { token, isFetching, error, user } = state;
+
+    return {
+        token,
+        isFetching,
+        error,
+        user: user,
+    }
+}
+
+export default connect(mapStateToProps)(Header);
