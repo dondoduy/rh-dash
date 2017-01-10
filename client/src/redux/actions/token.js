@@ -10,16 +10,18 @@ export const loginFailure = createAction(LOGIN_FAILURE);
 
 export function login(loginInfo) {
     return dispatch => {
+        console.log('dispatching login requested');
         dispatch(loginRequested);
 
-        let url = 'login/';
+        let url = 'login';
         let settings = {
             method: 'POST',
             body: JSON.stringify(loginInfo),
         };
 
-        ApiUtils.fetchResponse(url, settings)
+        return ApiUtils.fetchResponse(url, settings)
             .then(json => {
+                console.log('dispatching login success, token: ' + json.token);
                 dispatch(loginSuccess, json.token);
             })
             .catch(err => {
@@ -39,7 +41,7 @@ export function logout() {
     return dispatch => {
         dispatch(logoutRequested);
 
-        let url = 'logout/';
+        let url = 'logout';
         let settings = {
             method: 'POST',
         };

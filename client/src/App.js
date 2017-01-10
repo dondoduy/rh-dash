@@ -12,7 +12,7 @@ class App extends Component {
       <div className="App">
         <Header handleLogout={this.handleLogout} />
         {isLoggedIn && <Dashboard />}
-        {isLoggedIn && <Login handleLogin={this.handleLogin} />
+        {!isLoggedIn && <Login handleLogin={this.handleLogin} />
         }
       </div>
     );
