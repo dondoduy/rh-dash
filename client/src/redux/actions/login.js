@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import ApiUtils from '../../utils/ApiUtils';
+import * as userActions from './user';
 
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -10,8 +11,7 @@ export const loginFailure = createAction(LOGIN_FAILURE);
 
 export function login(loginInfo) {
     return dispatch => {
-        console.log('dispatching login requested');
-        dispatch(loginRequested);
+        dispatch(loginRequested());
 
         let url = 'login';
         let settings = {
@@ -21,14 +21,13 @@ export function login(loginInfo) {
 
         return ApiUtils.fetchResponse(url, settings)
             .then(json => {
-                console.log('dispatching login success, token: ' + json.token);
                 localStorage.setItem('sessionToken', json.token);
-                return dispatch(loginSuccess, json.token);
+                return dispatch(loginSuccess(json.token));
+                //return dispatch(userActions.getUser());
             })
             .catch(err => {
-                console.log('dispatching login failure, error: ' + ApiUtils.parseErrorStrings(err));
                 localStorage.removeItem('sessionToken');
-                return dispatch(loginFailure, ApiUtils.parseErrorStrings(err));
+                return dispatch(loginFailure(ApiUtils.parseErrorStrings(err)));
             });
     };
 }
@@ -42,7 +41,6 @@ export const logoutFailure = createAction(LOGOUT_FAILURE);
 
 export function logout() {
     return dispatch => {
-        console.log('dispatching logout requested');
         dispatch(logoutRequested);
 
         let url = 'logout';
@@ -50,14 +48,12 @@ export function logout() {
 
         return ApiUtils.fetchResponse(url, settings)
             .then(json => {
-                console.log('dispatching logout success');
                 localStorage.removeItem('sessionToken');
-                return dispatch(logoutSuccess);
+                return dispatch(logoutSuccess());
             })
             .catch(err => {
-                console.log('dispatching logout failure');
                 localStorage.removeItem('sessionToken');
-                return dispatch(logoutFailure, ApiUtils.parseErrorStrings(err));
+                return dispatch(logoutFailure(ApiUtils.parseErrorStrings(err)));
             });
     };
 }

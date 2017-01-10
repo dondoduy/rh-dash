@@ -9,6 +9,7 @@ var ApiUtils = {
 
         return response.json()
             .then(json => {
+                //todo: if error is due to session timeout, remove token
                 return Promise.reject(json);
             });
     },

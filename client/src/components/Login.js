@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as tokenActions from '../redux/actions/token';
+import * as loginActions from '../redux/actions/login';
 
 class Login extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
         }
@@ -11,11 +11,11 @@ class Login extends Component {
 
     handleClick = () => {
         let loginInfo = {
-            username: this.refs.uname.value,
-            password: this.refs.pword.value
+            username: this.uname.value,
+            password: this.pword.value
         };
 
-        return this.props.dispatch(tokenActions.login(loginInfo));
+        return this.props.dispatch(loginActions.login(loginInfo));
     }
 
 
@@ -23,9 +23,9 @@ class Login extends Component {
         return (
             <div className="Login">
                 Username:
-        <input type="text" ref="uname" />
+        <input type="text" ref={(uname) => (this.uname = uname)} />
                 Password:
-        <input type="password" ref="pword" />
+        <input type="password" ref={(pword) => (this.pword = pword)} />
                 <button onClick={this.handleClick}>Login</button>
                 <br />
                 {this.state.error}
@@ -35,13 +35,10 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-    let { token, isFetching, error, user } = state;
+    let { login } = state;
 
     return {
-        token,
-        isFetching,
-        error,
-        user: user,
+        login,
     }
 }
 

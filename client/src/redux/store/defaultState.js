@@ -1,13 +1,17 @@
 const defaultState = () => {
   return {
-    token: null,
-    isFetching: false,
-    error: '',
+    login: {
+      token: localStorage.getItem('sessionToken') || null,
+      isFetching: false,
+      error: '',
+    },
     user: {
       id: null,
       username: null,
-      firstName: null,
-      lastName: null,
+      first_name: null,
+      last_name: null,
+      isFetching: false,
+      error: '',
     },
     accounts: [{
       accountNumber: null,
@@ -16,11 +20,17 @@ const defaultState = () => {
       unclearedDeposits: null,
       unsettledFunds: null,
       buyingPower: null,
+      isFetching: false,
+      error: '',
     }],
     portfolio: {
+      portfolioUrl: null,
+      positionsUrl: null,
       marketValue: null,
       equity: null,
       extendedHoursMarketValue: null,
+      isFetching: false,
+      error: '',
     },
   };
 };
