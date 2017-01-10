@@ -22,7 +22,6 @@ const token = (state = defaultState, action) => {
             console.log(tokenActions.LOGOUT_FAILURE);
             return Object.assign({}, state, { token: null, isFetching: false, error: action.payload });
         default:
-            console.log(tokenActions.LOGIN_FAILURE);
             console.log('returning default state. action.type=' + action.type);
             return state;
     }
