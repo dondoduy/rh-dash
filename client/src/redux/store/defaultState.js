@@ -1,6 +1,6 @@
-const defaultValues = () => {
+const defaultState = () => {
   return {
-    token: localStorage.getItem('sessionToken') || null,
+    token: null,
     isFetching: false,
     error: '',
     user: {
@@ -25,4 +25,4 @@ const defaultValues = () => {
   };
 };
 
-export default defaultValues();
+export default defaultState();

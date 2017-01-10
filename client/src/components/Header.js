@@ -9,29 +9,6 @@ class Header extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     if (this.props.token) {
-    //         this.getUser();
-    //     }
-    // }
-
-    // getUser = () => {
-    //     let _this = this;
-    //     let url = 'http://localhost:8080/api/user/';
-    //     let settings = {
-    //         method: 'GET'
-    //     };
-
-    //     ApiUtils.fetchResponse(url, settings)
-    //         .then(json => {
-    //             _this.setState({ user: { name: json.first_name + ' ' + json.last_name } });
-    //         })
-    //         .catch(error => {
-    //             let errors = ApiUtils.parseErrorStrings(error);
-    //             _this.setState({ error: errors });
-    //         });
-    // }
-
     handleLogoutClick = () => {
         return this.props.dispatch(tokenActions.logout());
     }

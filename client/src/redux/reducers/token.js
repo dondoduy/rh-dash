@@ -1,7 +1,7 @@
 import defaultState from '../store/defaultState';
 import * as tokenActions from '../actions/token';
 
-const token = (state = defaultState.token, action) => {
+const token = (state = defaultState, action) => {
     switch (action.type) {
         case tokenActions.LOGIN_REQUESTED:
             console.log(tokenActions.LOGIN_REQUESTED);
@@ -22,6 +22,8 @@ const token = (state = defaultState.token, action) => {
             console.log(tokenActions.LOGOUT_FAILURE);
             return Object.assign({}, state, { token: null, isFetching: false, error: action.payload });
         default:
+            console.log(tokenActions.LOGIN_FAILURE);
+            console.log('returning default state. action.type=' + action.type);
             return state;
     }
 };

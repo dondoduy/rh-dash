@@ -10,10 +10,9 @@ class App extends Component {
     const isLoggedIn = this.props.token;
     return (
       <div className="App">
-        <Header handleLogout={this.handleLogout} />
+        <Header />
+        {!isLoggedIn && <Login />}
         {isLoggedIn && <Dashboard />}
-        {!isLoggedIn && <Login handleLogin={this.handleLogin} />
-        }
       </div>
     );
   }

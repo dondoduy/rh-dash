@@ -8,6 +8,7 @@ class Login extends Component {
         this.state = {
         }
     }
+
     handleClick = () => {
         let loginInfo = {
             username: this.refs.uname.value,
@@ -16,6 +17,7 @@ class Login extends Component {
 
         return this.props.dispatch(tokenActions.login(loginInfo));
     }
+
 
     render() {
         return (

@@ -46,9 +46,7 @@ export function logout() {
         dispatch(logoutRequested);
 
         let url = 'logout';
-        let settings = {
-            method: 'POST',
-        };
+        let settings = { method: 'POST', };
 
         return ApiUtils.fetchResponse(url, settings)
             .then(json => {
@@ -57,6 +55,7 @@ export function logout() {
                 return dispatch(logoutSuccess);
             })
             .catch(err => {
+                console.log('dispatching logout failure');
                 localStorage.removeItem('sessionToken');
                 return dispatch(logoutFailure, ApiUtils.parseErrorStrings(err));
             });
