@@ -18,7 +18,7 @@ router.route('/login')
 			.send({ form: { username: req.body.username, password: req.body.password } })
 			.set('Accept', 'application/json')
 			.end(function (error, response) {
-				if (error) { console.log(error); res.send(500, error); return; }
+			if (error) { console.log(error); res.status(error.status).send(error.response.text); return; }
 				res.status(response.statusCode).json(response.body);
 			});
 	});
@@ -29,7 +29,7 @@ router.post('/logout', function (req, res) {
 		.post(url)
 		.set('authorization', req.header('authorization'))
 		.end(function (error, response) {
-			if (error) { console.log(error); res.send(500, error); return; }
+			if (error) { console.log(error); res.status(error.status).send(error.response.text); return; }
 			res.status(response.statusCode).json(response.body);
 		});
 });
@@ -40,7 +40,7 @@ router.get('/user', function (req, res) {
 		.get(url)
 		.set('authorization', req.header('authorization'))
 		.end(function (error, response) {
-			if (error) { console.log(error); res.send(500, error); return; }
+			if (error) { console.log(error); res.status(error.status).send(error.response.text); return; }
 			res.status(response.statusCode).json(response.body);
 		});
 });
@@ -52,11 +52,14 @@ router.get('/accounts', function (req, res) {
 	getNextAccountList(url, headers, [])
 		.then(accounts => {
 			res.send(accounts);
+		})
+		.catch(err => {
+			console.log(error);
+			res.status(err.status).send(err.response.text);
 		});
 });
 
 function getNextAccountList(nextUrl, headers, accounts) {
-	console.log('nextUrl=' + nextUrl);
 	if (!nextUrl) {
 		return Promise.resolve(accounts);
 	}
@@ -74,6 +77,10 @@ function getNextAccountList(nextUrl, headers, accounts) {
 
 router.get('/liveData', function (req, res) {
 	var account_number = req.header('acctNum');
+	if (!account_number) {
+		return res.status(500).send('account_number missing');
+	}
+
 	async.parallel([
 		// get account info
 		function (callback) {
@@ -111,7 +118,7 @@ router.get('/liveData', function (req, res) {
 		}
 	],
 		function (err, results) {
-			if (err) { console.log(err); res.send(500, err); return; }
+			if (err) { console.log(err); res.status(err.status).send(err.response.text); return; }
 			res.send({
 				account: results[0],
 				portfolio: results[1],
