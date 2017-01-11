@@ -1,16 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as loginActions from '../../redux/actions/login';
-import * as userActions from '../../redux/actions/user';
+//import * as userActions from '../../redux/actions/user';
 import './index.css';
 
 class Header extends Component {
+    isLoggedIn = () => {
+        return this.props.login && this.props.login.token;
+    }
+
     handleLogout = () => {
         return this.props.dispatch(loginActions.logout());
     }
 
+    renderUser = () => {
+        if(!this.isLoggedIn()){
+            return null;
+        }
+
+        return ( 
+            <div className="header-name">
+                <h2>Welcome {this.props.user.first_name}</h2>
+                <a onClick={this.handleLogout}>Logout</a>
+            </div>
+        );
+    }
+
     renderAccounts = () => {
-        if (!this.props.accounts || !this.props.accounts[0].accountNumber) {
+        if(!this.props.accounts || this.props.accounts.portfolioUrl){
             return null;
         }
 
@@ -26,7 +43,7 @@ class Header extends Component {
     }
 
     renderPortfolio = () => {
-        if (!this.props.portfolio || !this.props.portfolio.portfolioUrl) {
+        if(!this.props.portfolio || this.props.portfolio.length <= 0){
             return null;
         }
 
@@ -42,12 +59,9 @@ class Header extends Component {
     render() {
         return (
             <div className="App-header">
-                {this.renderAccounts()}
-                <div className="header-name">
-                    <h2>Welcome {this.props.user.first_name}</h2>
-                    <a onClick={this.props.handleLogout}>Logout</a>
-                </div>
-                {this.renderPortfolio()}
+                {this.isLoggedIn() && this.renderUser()}
+                {this.isLoggedIn() && this.renderAccounts()}
+                {this.isLoggedIn() && this.renderPortfolio()}
             </div>
         );
     }

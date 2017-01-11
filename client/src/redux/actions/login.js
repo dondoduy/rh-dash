@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions';
 import ApiUtils from '../../utils/ApiUtils';
-import * as userActions from './user';
 
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -23,7 +22,6 @@ export function login(loginInfo) {
             .then(json => {
                 localStorage.setItem('sessionToken', json.token);
                 return dispatch(loginSuccess(json.token));
-                //return dispatch(userActions.getUser());
             })
             .catch(err => {
                 localStorage.removeItem('sessionToken');

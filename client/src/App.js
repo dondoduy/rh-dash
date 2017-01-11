@@ -8,10 +8,21 @@ import Dashboard from './components/Dashboard';
 
 class App extends Component {
 
-  componentDidMount(){
-    if(this.props.login.token){
-      this.props.dispatch(userActions.getUser());
+  componentWillReceiveProps(newProps) {
+    if (newProps.login.token && newProps.login.token !== this.props.login.token) {
+      this.refreshData();
     }
+  }
+
+  componentDidMount() {
+    if (this.props.login.token) {
+      this.refreshData();
+    }
+  }
+
+  refreshData = () => {
+      this.props.dispatch(userActions.getUser());
+
   }
 
   render() {
