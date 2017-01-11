@@ -5,12 +5,6 @@ import * as userActions from '../../redux/actions/user';
 import './index.css';
 
 class Header extends Component {
-    componentWillReceiveProps(nextProps){
-        if(this.props.login.token !== nextProps.login.token){
-            return this.props.dispatch(userActions.getUser());
-        }
-    }
-
     handleLogout = () => {
         return this.props.dispatch(loginActions.logout());
     }

@@ -17,12 +17,12 @@ export function getUser() {
             method: 'GET',
         };
 
-        return ApiUtils.fetchResponse(url, settings)
+        return ApiUtils.fetchResponse(url, settings, dispatch)
             .then(json => {
                return dispatch(fetchUserSuccess(json));
             })
             .catch(err => {
-                return dispatch(fetchUserFailure(ApiUtils.parseErrorStrings(err)));
+                return dispatch(fetchUserFailure(err));
             });
     };
 }

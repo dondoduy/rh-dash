@@ -19,7 +19,7 @@ export function login(loginInfo) {
             body: JSON.stringify(loginInfo),
         };
 
-        return ApiUtils.fetchResponse(url, settings)
+        return ApiUtils.fetchResponse(url, settings, dispatch)
             .then(json => {
                 localStorage.setItem('sessionToken', json.token);
                 return dispatch(loginSuccess(json.token));
@@ -27,7 +27,7 @@ export function login(loginInfo) {
             })
             .catch(err => {
                 localStorage.removeItem('sessionToken');
-                return dispatch(loginFailure(ApiUtils.parseErrorStrings(err)));
+                return dispatch(loginFailure(err));
             });
     };
 }
@@ -46,14 +46,14 @@ export function logout() {
         let url = 'logout';
         let settings = { method: 'POST', };
 
-        return ApiUtils.fetchResponse(url, settings)
+        return ApiUtils.fetchResponse(url, settings, dispatch)
             .then(json => {
                 localStorage.removeItem('sessionToken');
                 return dispatch(logoutSuccess());
             })
             .catch(err => {
                 localStorage.removeItem('sessionToken');
-                return dispatch(logoutFailure(ApiUtils.parseErrorStrings(err)));
+                return dispatch(logoutFailure(err));
             });
     };
 }

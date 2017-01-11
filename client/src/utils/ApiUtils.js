@@ -1,40 +1,52 @@
+import { logout } from '../redux/actions/login';
+
 const apiBase =
     (process.env.NODE_ENV === 'production') ?
         'http://localhost:8080/api' :
         'http://localhost:8080/api';
 
 var ApiUtils = {
-    checkStatus: function (response) {
+    checkStatus: function (response, dispatch, url) {
         if (response.ok) { return Promise.resolve(response); }
 
         return response.json()
             .then(json => {
-                //todo: if error is due to session timeout, remove token
-                return Promise.reject(json);
+                let error = this.parseErrorStrings(json);
+
+                if (JSON.stringify(json).toLowerCase().includes('invalid token')
+                && !url.includes('logout')) {
+                    dispatch(logout());
+                }
+
+                return Promise.reject(error);
             });
     },
-    fetchResponse: function (url, settings) {
+    fetchResponse: function (url, settings, dispatch) {
+        var token = localStorage.getItem("sessionToken");
+        if (!token && url !== 'login') {
+            return Promise.reject('Invalid Token');
+        }
+
         var newUrl = `${apiBase}/${url}`;
         var init = Object.assign({
             headers: new Headers({
                 'Content-Type': 'application/json',
-                'authorization': 'Token ' + localStorage.getItem("sessionToken")
+                'authorization': 'Token ' + token,
             })
         }, settings);
-        
+
         return fetch(newUrl, init)
-            .then(this.checkStatus)
+            .then(response => this.checkStatus(response, dispatch, url))
             .then(response => response.json());
     },
-    parseErrorStrings: function (error) {
-        let key;
-        let errors = '';
-        for (key in error) {
-            if (error.hasOwnProperty(key)) {
-                errors = errors + key + ' = ' + error[key];
+    parseErrorStrings: function (err) {
+        let errorString = '';
+        for (var key in err) {
+            if (err.hasOwnProperty(key)) {
+                errorString = errorString + key + ' = ' + err[key];
             }
         }
-        return errors;
+        return errorString;
     }
 }
 
