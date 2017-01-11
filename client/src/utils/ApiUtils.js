@@ -23,11 +23,12 @@ var ApiUtils = {
         let key;
         let errors = '';
         for (key in error) {
-          if (error.hasOwnProperty(key)) {
-            errors = errors + key + ' = ' + error[key];
-          }
+            if (error.hasOwnProperty(key)) {
+                errors = errors + '<li className="error">' + key + ' = ' + error[key] + '</li>';
+            }
         }
-        return errors;
+
+        return (errors.length >= 1) ? {__html: '<ul className="errors">' + errors + '</ul>'} :{__html: ''};
     }
 }
 

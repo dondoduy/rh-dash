@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as tokenActions from './redux/actions/token';
 import './App.css';
 import ApiUtils from './utils/ApiUtils';
-import Header from './components/Header';
+import Header from './components/header/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
       token: null,
+      user: null,
       accounts: null,
       portfolio: null,
+      error: null
+    };
+  }
 
   handleLogin = (token) => {
     //localStorage.setItem("sessionToken", token);
-    this.setState({ user: { name: user.name }, error: null });
+    this.setState({ token: token, error: null });
+    this.getUserInfo();
   }
 
   getUserInfo = () => {
@@ -78,9 +84,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <Header handleLogout={this.handleLogout} />
-        {this.props.token && <Dashboard />}
-        {this.props.token !== '' &&
+        {this.state.user &&
+          <Header handleLogout={this.handleLogout} user={this.state.user} accounts={this.state.accounts} portfolio={this.state.portfolio}/>
+        }
+        {!this.state.user && <Header handleLogout={this.handleLogout} />}
+        {this.state.user && <Dashboard />}
+        {!this.state.user &&
           <Login handleLogin={this.handleLogin} />
         }
       </div>
@@ -88,15 +97,4 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  let { token, isFetching, error, user } = state;
-
-  return {
-    token,
-    isFetching,
-    error,
-    user: user,
-  }
-}
-
-export default connect(mapStateToProps)(App);
+export default App;

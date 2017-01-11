@@ -8,52 +8,11 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
 class App extends Component {
-      token: null,
-      accounts: null,
-      portfolio: null,
 
-  handleLogin = (token) => {
-    //localStorage.setItem("sessionToken", token);
-    this.setState({ user: { name: user.name }, error: null });
-  }
-
-  getUserInfo = () => {
-    let _this = this;
-    let url = 'http://localhost:8080/api/userInfo/';
-    let settings = {
-      method: 'GET'
-    };
-
-    ApiUtils.fetchResponse(url, settings)
-      .then(json => {
-        _this.setState({ user: json.user, accounts: json.accounts });
-      })
-      .catch(error => {
-        let errors = ApiUtils.parseErrorStrings(error);
-        _this.setState({ error: errors });
-      });
-  }
-
-  getPortfolioInfo = () => {
-    let accountId = this.state.accounts.account_number;
-    if(!accountId) { return; }
-
-    let _this = this;
-    let url = 'http://localhost:8080/api/portfolio/';
-    let settings = {
-      method: 'GET',
-      headers: new Headers({'accountId': accountId})
-    };
-
-    ApiUtils.fetchResponse(url, settings)
-      .then(json => {
-        _this.setState({ portfolio: json.portfolio });
-      })
-      .catch(error => {
-        let errors = ApiUtils.parseErrorStrings(error);
-        _this.setState({ error: errors });
-      });
-
+  handleLogin = (user, token) => {
+    localStorage.setItem("sessionToken", token);
+    this.props.dispatch(tokenActions.loginRequested);
+    //this.setState({ user: { name: user.name }, error: null });
   }
 
   handleLogout = () => {
@@ -78,7 +37,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <Header handleLogout={this.handleLogout} />
+        <Header handleLogout={this.handleLogout} />
         {this.props.token && <Dashboard />}
         {this.props.token !== '' &&
           <Login handleLogin={this.handleLogin} />

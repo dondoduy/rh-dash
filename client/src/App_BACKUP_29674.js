@@ -8,13 +8,28 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
 class App extends Component {
+<<<<<<< HEAD
+
+  handleLogin = (user, token) => {
+    localStorage.setItem("sessionToken", token);
+    this.props.dispatch(tokenActions.loginRequested);
+    //this.setState({ user: { name: user.name }, error: null });
+=======
+  constructor() {
+    super();
+    this.state = {
       token: null,
+      user: null,
       accounts: null,
       portfolio: null,
+      error: null
+    };
+  }
 
   handleLogin = (token) => {
     //localStorage.setItem("sessionToken", token);
-    this.setState({ user: { name: user.name }, error: null });
+    this.setState({ token: token, error: null });
+    this.getUserInfo();
   }
 
   getUserInfo = () => {
@@ -54,6 +69,7 @@ class App extends Component {
         _this.setState({ error: errors });
       });
 
+>>>>>>> bdba034afc5f72d27f77499845d50755520adf85
   }
 
   handleLogout = () => {
@@ -78,9 +94,18 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <Header handleLogout={this.handleLogout} />
+<<<<<<< HEAD
+        <Header handleLogout={this.handleLogout} />
         {this.props.token && <Dashboard />}
         {this.props.token !== '' &&
+=======
+        {this.state.user &&
+          <Header handleLogout={this.handleLogout} user={this.state.user} accounts={this.state.accounts} portfolio={this.state.portfolio}/>
+        }
+        {!this.state.user && <Header handleLogout={this.handleLogout} />}
+        {this.state.user && <Dashboard />}
+        {!this.state.user &&
+>>>>>>> bdba034afc5f72d27f77499845d50755520adf85
           <Login handleLogin={this.handleLogin} />
         }
       </div>
