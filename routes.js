@@ -4,6 +4,21 @@ var async = require('async');
 
 const apiBase = 'https://api.robinhood.com/';
 var router = express.Router();
+function getNextAccountList(nextUrl, headers, accounts) {
+	if (!nextUrl) {
+		return Promise.resolve(accounts);
+	}
+
+	return new Promise(function (resolve, reject) {
+		request
+			.get(nextUrl)
+			.set(headers)
+			.end(function (error, response) {
+				if (error) { return reject(error); }
+				return resolve(getNextAccountList(response.body.next, headers, accounts.concat(response.body.results)));
+			});
+	});
+}
 
 router.use(function (req, res, next) {
 	console.log(req.originalUrl);
@@ -33,7 +48,6 @@ router.post('/logout', function (req, res) {
 			res.status(response.statusCode).json(response.body);
 		});
 });
-
 router.get('/user', function (req, res) {
 	var url = apiBase + 'user/';
 	request
@@ -44,7 +58,6 @@ router.get('/user', function (req, res) {
 			res.status(response.statusCode).json(response.body);
 		});
 });
-
 router.get('/accounts', function (req, res) {
 	let url = apiBase + 'accounts/';
 	let headers = { 'authorization': req.header('authorization') };
@@ -58,23 +71,6 @@ router.get('/accounts', function (req, res) {
 			res.status(err.status).send(err.response.text);
 		});
 });
-
-function getNextAccountList(nextUrl, headers, accounts) {
-	if (!nextUrl) {
-		return Promise.resolve(accounts);
-	}
-
-	return new Promise(function (resolve, reject) {
-		request
-			.get(nextUrl)
-			.set(headers)
-			.end(function (error, response) {
-				if (error) { return reject(error); }
-				return resolve(getNextAccountList(response.body.next, headers, accounts.concat(response.body.results)));
-			});
-	});
-}
-
 router.get('/liveData', function (req, res) {
 	var account_number = req.header('acctNum');
 	if (!account_number) {
@@ -126,7 +122,6 @@ router.get('/liveData', function (req, res) {
 			});
 		});
 });
-
 router.get('/', function (req, res) {
 	res.json({ message: 'API GET works' });
 });
