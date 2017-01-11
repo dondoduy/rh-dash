@@ -22,6 +22,7 @@
 
 .header-name {
     /*border: 1px solid white;*/
+    font-size: 11px;
     flex-basis: 50%;
     height: 100%;
     display: flex;

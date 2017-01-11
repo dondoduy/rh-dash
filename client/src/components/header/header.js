@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as loginActions from '../../redux/actions/login';
-//import * as userActions from '../../redux/actions/user';
 import './index.css';
 
 class Header extends Component {
@@ -20,8 +19,9 @@ class Header extends Component {
 
         return ( 
             <div className="header-name">
-                <h2>Welcome {this.props.user.first_name}</h2>
-                <a onClick={this.handleLogout}>Logout</a>
+                <div className="row"><h3>Welcome {this.props.user.first_name}</h3></div>
+                <div className="row"><div>Account #:</div><div className="val">{this.props.accounts[0].account_number}</div></div>
+                <div className="row"><a onClick={this.handleLogout}>Logout</a></div>
             </div>
         );
     }

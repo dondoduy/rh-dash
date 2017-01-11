@@ -4,7 +4,7 @@ import { LOGOUT_REQUESTED } from '../actions/login';
 
 const initialState = defaultState.user;
 
-const user = (state = defaultState.user, action) => {
+const user = (state = initialState, action) => {
     switch (action.type) {
         case userActions.FETCH_USER_REQUESTED:
             return Object.assign({}, state, { isFetching: true, error: '' });
