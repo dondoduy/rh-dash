@@ -1,50 +1,45 @@
 import React, { Component } from 'react';
-//import ApiUtils from '../utils/ApiUtils';
+import { connect } from 'react-redux';
+import * as loginActions from '../redux/actions/login';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: null
         }
     }
 
-    handleClick = (e) => {
-       // let _this = this;
-        let username = this.refs.uname.value;
-        let password = this.refs.pword.value;
+    handleClick = () => {
+        let loginInfo = {
+            username: this.uname.value,
+            password: this.pword.value
+        };
 
-        this.props.handleLogin({username: username, password: password}, 'token');
-
-                _this.props.handleLogin({ name: username }, json.token);
-        // let url = 'http://localhost:8080/api/login/';
-        // let settings = {
-        //     method: 'POST',
-        //     body: JSON.stringify({ username: username, password: password })
-        // };
-
-        // ApiUtils.fetchResponse(url, settings)
-        //     .then(json => {
-        //         _this.props.handleLogin({ name: username }, json.token);
-        //     })
-        //     .catch(error => {
-        //         let errors = ApiUtils.parseErrorStrings(error);
-        //         _this.setState({ error: errors });
-        //     });
+        return this.props.dispatch(loginActions.login(loginInfo));
     }
 
 
     render() {
         return (
             <div className="Login">
-                Username: <input type="text" ref="uname" />
-                Password: <input type="password" ref="pword" />
+                Username:
+        <input type="text" ref={(uname) => (this.uname = uname)} />
+                Password:
+        <input type="password" ref={(pword) => (this.pword = pword)} />
                 <button onClick={this.handleClick}>Login</button>
-                {this.state.error} - {this.state.fname}
+                <br />
                 {this.state.error}
             </div>
         );
     }
 }
 
-export default Login;
+function mapStateToProps(state) {
+    let { login } = state;
+
+    return {
+        login,
+    }
+}
+
+export default connect(mapStateToProps)(Login);

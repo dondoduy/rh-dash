@@ -1,21 +1,28 @@
+const apiBase =
+    (process.env.NODE_ENV === 'production') ?
+        'http://localhost:8080/api' :
+        'http://localhost:8080/api';
+
 var ApiUtils = {
     checkStatus: function (response) {
-        if (response.ok) {
-            return Promise.resolve(response);
-        }
+        if (response.ok) { return Promise.resolve(response); }
 
-        return response.json().then(json => {
-            return Promise.reject(json);
-        });
+        return response.json()
+            .then(json => {
+                //todo: if error is due to session timeout, remove token
+                return Promise.reject(json);
+            });
     },
     fetchResponse: function (url, settings) {
+        var newUrl = `${apiBase}/${url}`;
         var init = Object.assign({
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'authorization': 'Token ' + localStorage.getItem("sessionToken")
             })
         }, settings);
-        return fetch(url, init)
+        
+        return fetch(newUrl, init)
             .then(this.checkStatus)
             .then(response => response.json());
     },
@@ -24,11 +31,10 @@ var ApiUtils = {
         let errors = '';
         for (key in error) {
             if (error.hasOwnProperty(key)) {
-                errors = errors + '<li className="error">' + key + ' = ' + error[key] + '</li>';
+                errors = errors + key + ' = ' + error[key];
             }
         }
-
-        return (errors.length >= 1) ? {__html: '<ul className="errors">' + errors + '</ul>'} :{__html: ''};
+        return errors;
     }
 }
 
