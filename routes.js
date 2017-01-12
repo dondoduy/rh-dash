@@ -4,6 +4,8 @@ var async = require('async');
 
 const apiBase = 'https://api.robinhood.com/';
 var router = express.Router();
+
+// recursive function to make API calls until all pages have been retrieved
 function getNextAccountList(nextUrl, headers, accounts) {
 	if (!nextUrl) {
 		return Promise.resolve(accounts);
@@ -30,14 +32,13 @@ router.route('/login')
 		var url = apiBase + 'api-token-auth/';
 		request
 			.post(url)
-			.send({ form: { username: req.body.username, password: req.body.password } })
+			.send({ username: req.body.username, password: req.body.password })
 			.set('Accept', 'application/json')
 			.end(function (error, response) {
-			if (error) { console.log(error); res.status(error.status).send(error.response.text); return; }
+				if (error) { console.log(error); res.status(error.status).send(error.response.text); return; }
 				res.status(response.statusCode).json(response.body);
 			});
 	});
-
 router.post('/logout', function (req, res) {
 	var url = apiBase + 'api-token-logout/';
 	request
@@ -48,33 +49,45 @@ router.post('/logout', function (req, res) {
 			res.status(response.statusCode).json(response.body);
 		});
 });
-router.get('/user', function (req, res) {
-	var url = apiBase + 'user/';
-	request
-		.get(url)
-		.set('authorization', req.header('authorization'))
-		.end(function (error, response) {
-			if (error) { console.log(error); res.status(error.status).send(error.response.text); return; }
-			res.status(response.statusCode).json(response.body);
+router.get('/userData', function (req, res) {
+	console.log('userData request received');
+	async.parallel([
+		// get user info
+		function (callback) {
+			var url = apiBase + 'user/';
+			request
+				.get(url)
+				.set('authorization', req.header('authorization'))
+				.end(function (error, response) {
+					if (error) { callback(error); return; }
+					callback(false, response.body);
+				});
+		},
+		// get list of accounts
+		function (callback) {
+			let url = apiBase + 'accounts/';
+			let headers = { 'authorization': req.header('authorization') };
+			getNextAccountList(url, headers, [])
+				.then(accounts => {
+					callback(false, accounts);
+				})
+				.catch(err => { callback(err); return; });
+		},
+	],
+		function (err, results) {
+			if (err) { console.log(err); res.status(err.status).send(err.response.text); return; }
+			res.send({
+				user: results[0],
+				accounts: results[1],
+			});
 		});
-});
-router.get('/accounts', function (req, res) {
-	let url = apiBase + 'accounts/';
-	let headers = { 'authorization': req.header('authorization') };
 
-	getNextAccountList(url, headers, [])
-		.then(accounts => {
-			res.send(accounts);
-		})
-		.catch(err => {
-			console.log(error);
-			res.status(err.status).send(err.response.text);
-		});
 });
-router.get('/liveData', function (req, res) {
-	var account_number = req.header('acctNum');
+router.get('/accountDetails', function (req, res, next) {
+	let account_number = req.header('account_number');
 	if (!account_number) {
-		return res.status(500).send('account_number missing');
+		res.status(500).send(JSON.stringify('account_number missing'));
+		return next();
 	}
 
 	async.parallel([
@@ -85,7 +98,7 @@ router.get('/liveData', function (req, res) {
 				.get(url)
 				.set('authorization', req.header('authorization'))
 				.end(function (error, response) {
-					if (error) { console.log(error); callback(true); return; }
+					if (error) { callback(error); return; }
 					callback(false, response.body);
 				});
 		},
@@ -96,7 +109,7 @@ router.get('/liveData', function (req, res) {
 				.get(url)
 				.set('authorization', req.header('authorization'))
 				.end(function (error, response) {
-					if (error) { console.log(error); callback(true); return; }
+					if (error) { callback(error); return; }
 					callback(false, response.body);
 				});
 		},
@@ -108,7 +121,7 @@ router.get('/liveData', function (req, res) {
 				.get(url)
 				.set('authorization', req.header('authorization'))
 				.end(function (error, response) {
-					if (error) { console.log(error); callback(true); return; }
+					if (error) { callback(error); return; }
 					callback(false, response.body);
 				});
 		}

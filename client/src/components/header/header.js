@@ -1,35 +1,59 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as loginActions from '../../redux/actions/login';
+import * as userDataActions from '../../redux/actions/userData';
+import defaultState from '../../redux/store/defaultState';
 import './index.css';
 
 class Header extends Component {
+    constructor(props){
+        super(props);
+        this.state = defaultState;
+    }
+
     isLoggedIn = () => {
         return this.props.login && this.props.login.token;
+    }
+
+    handleAccountChange = (e) => {
+        this.props.dispatch(userDataActions.changeAccount(e.target.value));
     }
 
     handleLogout = () => {
         return this.props.dispatch(loginActions.logout());
     }
 
-    renderUser = () => {
-        if(!this.isLoggedIn()){
-            return null;
-        }
+    renderUserDetails = () => {
+        if (!this.isLoggedIn()) { return null; }
+        if (!this.props.userData || !this.props.userData.accounts || this.props.userData.accounts.length <= 0) { return null; }
 
-        return ( 
+        return (
             <div className="header-name">
-                <div className="row"><h3>Welcome {this.props.user.first_name}</h3></div>
-                <div className="row"><div>Account #:</div><div className="val">{this.props.accounts[0].account_number}</div></div>
-                <div className="row"><a onClick={this.handleLogout}>Logout</a></div>
+                <div className="row">
+                    <h3>Welcome {this.props.userData.user.first_name}</h3>
+                </div>
+                <div className="row">
+                    <div>Account:</div><div className="val">
+                        <select value={this.props.userData.selectedAccount} onChange={this.handleAccountChange}>
+                            {this.props.userData.accounts.map(acct => {
+                               return <option key={acct.account_number}>{acct.account_number}</option>
+                            })}
+                        </select>
+                    </div>
+                </div>
+                <div className="row">
+                    <a onClick={this.handleLogout}>Logout</a>
+                </div>
             </div>
         );
     }
 
-    renderAccounts = () => {
-        if(!this.props.accounts || this.props.accounts.portfolioUrl){
+    renderAccountDetails = () => {
+        if (!this.props.accountDetails || !this.props.accountDetails.account) {
             return null;
         }
+
+        //TODO: ADD FETCHING SPINNER
 
         return (
             <div className="header-cash">
@@ -42,10 +66,12 @@ class Header extends Component {
         );
     }
 
-    renderPortfolio = () => {
-        if(!this.props.portfolio || this.props.portfolio.length <= 0){
+    renderPortfolioDetails = () => {
+        if (!this.props.portfolio || this.props.portfolio.length <= 0) {
             return null;
         }
+
+        //TODO: ADD FETCHING SPINNER
 
         return (
             <div className="header-portfolio">
@@ -59,9 +85,9 @@ class Header extends Component {
     render() {
         return (
             <div className="App-header">
-                {this.isLoggedIn() && this.renderUser()}
-                {this.isLoggedIn() && this.renderAccounts()}
-                {this.isLoggedIn() && this.renderPortfolio()}
+                {this.isLoggedIn() && this.renderUserDetails()}
+                {this.isLoggedIn() && this.renderAccountDetails()}
+                {this.isLoggedIn() && this.renderPortfolioDetails()}
             </div>
         );
     }
@@ -70,9 +96,8 @@ class Header extends Component {
 function mapStateToProps(state) {
     return {
         login: state.login,
-        user: state.user,
-        accounts: state.accounts,
-        portfolio: state.portfolio,
+        userData: state.userData,
+        accountDetails: state.accountDetails,
     }
 }
 

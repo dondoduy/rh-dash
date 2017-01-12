@@ -1,22 +1,27 @@
 import defaultState from '../store/defaultState';
-import * as userActions from '../actions/user';
+import * as accountDetailsActions from '../actions/accountDetails';
 import { LOGOUT_REQUESTED } from '../actions/login';
 
-const initialState = defaultState.user;
+const initialState = defaultState.accountDetails;
 
-const user = (state = initialState, action) => {
+const accountDetails = (state = initialState, action) => {
     switch (action.type) {
-        case userActions.FETCH_USER_REQUESTED:
+        
+        case accountDetailsActions.FETCH_ACCOUNTDETAILS_REQUESTED:
             return Object.assign({}, state, { isFetching: true, error: '' });
-        case userActions.FETCH_USER_SUCCESS:
+
+        case accountDetailsActions.FETCH_ACCOUNTDETAILS_SUCCESS:
             return Object.assign({}, action.payload, { isFetching: false, error: '' });
-        case userActions.FETCH_USER_FAILURE:
+
+        case accountDetailsActions.FETCH_ACCOUNTDETAILS_FAILURE:
             return Object.assign({}, state, { isFetching: false, error: action.payload });
+
         case LOGOUT_REQUESTED:
             return initialState;
+
         default:
             return state;
     }
 };
 
-export default user;
+export default accountDetails;

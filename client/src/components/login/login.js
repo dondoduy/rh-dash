@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as loginActions from '../redux/actions/login';
+import * as loginActions from '../../redux/actions/login';
+import defaultState from '../../redux/store/defaultState';
 
 class Login extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
-        this.state = {
-        }
+        this.state = defaultState;
     }
 
     handleClick = () => {

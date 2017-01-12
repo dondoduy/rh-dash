@@ -5,22 +5,21 @@ const defaultState = () => {
       isFetching: false,
       error: '',
     },
-    user: {
-      id: null,
-      username: null,
-      first_name: null,
-      last_name: null,
-      isFetching: false,
-      error: '',
-    },
-    accounts: {
-      list: [{
+    userData: {
+      user: {
+        id: null,
+        username: null,
+        first_name: null,
+        last_name: null,
+      },
+      accounts: [{
         account_number: null,
       }],
+      selectedAccount: null,
       isFetching: false,
       error: '',
     },
-    liveData: {
+    accountDetails: {
       account: {
         account_number: null,
         cash: null,

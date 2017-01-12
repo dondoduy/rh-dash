@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 8080; // set our port
 
 app.use(function (req, res, next) {
+	res.header("Content-Type", "application/json");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
 	next();

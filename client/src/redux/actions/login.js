@@ -24,6 +24,7 @@ export function login(loginInfo) {
                 return dispatch(loginSuccess(json.token));
             })
             .catch(err => {
+                console.log('login error');
                 localStorage.removeItem('sessionToken');
                 return dispatch(loginFailure(err));
             });
@@ -51,6 +52,7 @@ export function logout() {
             })
             .catch(err => {
                 localStorage.removeItem('sessionToken');
+                console.log('login reducer calling logout');
                 return dispatch(logoutFailure(err));
             });
     };
