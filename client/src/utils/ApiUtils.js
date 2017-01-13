@@ -14,7 +14,7 @@ var ApiUtils = {
                 let error = this.parseErrorStrings(json);
 
                 if (JSON.stringify(json).toLowerCase().includes('invalid token')
-                && !url.includes('logout')) {
+                    && !url.includes('logout')) {
                     dispatch(logout());
                 }
 
@@ -27,15 +27,15 @@ var ApiUtils = {
             return Promise.reject('Invalid Token');
         }
 
-        var newUrl = `${apiBase}/${url}`;
-        var init = Object.assign({
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'authorization': 'Token ' + token,
-            })
-        }, settings);
+        if (!settings.headers) { 
+            Object.assign(settings, { headers: new Headers() }); 
+        }
+        settings.headers.append('Content-Type', 'application/json');
+        settings.headers.append('authorization', 'Token ' + token);
 
-        return fetch(newUrl, init)
+        var newUrl = `${apiBase}/${url}`;
+
+        return fetch(newUrl, settings)
             .then(response => this.checkStatus(response, dispatch, url))
             .then(response => response.json());
     },

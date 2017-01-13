@@ -30,6 +30,7 @@ router.use(function (req, res, next) {
 router.route('/login')
 	.post(function (req, res) {
 		var url = apiBase + 'api-token-auth/';
+		console.log(req.body.username);
 		request
 			.post(url)
 			.send({ username: req.body.username, password: req.body.password })

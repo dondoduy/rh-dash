@@ -11,7 +11,7 @@ export function getAccountDetails(account_number) {
     return dispatch => {
         dispatch(fetchAccountDetailsRequested());
 
-        let url = 'accoundDetails';
+        let url = 'accountDetails';
         let settings = {
             method: 'GET',
             headers: new Headers({'account_number': account_number}),
