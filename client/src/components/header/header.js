@@ -39,15 +39,17 @@ class Header extends Component {
             <div className="header-user">
                 <div className="row end">
                     <h3 className="max">Welcome {this.props.userData.user.first_name}</h3>
-                    <a  className="max"onClick={this.handleLogout}>Logout</a>
+                    <a className="max" onClick={this.handleLogout}>Logout</a>
                 </div>
-                <div className="row">
-                    <div>Select Account:</div>
-                    <select value={selectedAccount} onChange={this.handleAccountChange} className="max">
-                        {this.props.userData.accounts.map(acct => {
-                            return <option key={acct.account_number}>{acct.account_number}</option>
-                        })}
-                    </select>
+                <div className="row end">
+                    <div className="max">Select Account:</div>
+                    <div className="max">
+                        <select value={selectedAccount} onChange={this.handleAccountChange}>
+                            {this.props.userData.accounts.map(acct => {
+                                return <option key={acct.account_number}>{acct.account_number}</option>
+                            })}
+                        </select>
+                    </div>
                 </div>
             </div>
         );

@@ -30,6 +30,7 @@
 .header-user {
     /*border: 1px solid white;*/
     font-size: 11px;
+    flex-basis: 25%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -39,6 +40,7 @@
 .header-portfolio {
     /*border: 1px solid white;*/
     font-size: 14px;
+    flex-basis: 50%;
     flex-basis: 400px;
     height: 100%;
     display: flex;

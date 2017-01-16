@@ -66,8 +66,8 @@ router.get('/userData', function (req, res) {
 		},
 		// get list of accounts
 		function (callback) {
-			let url = apiBase + 'accounts/';
-			let headers = { 'authorization': req.header('authorization') };
+			var url = apiBase + 'accounts/';
+			var headers = { 'authorization': req.header('authorization') };
 			getNextAccountList(url, headers, [])
 				.then(accounts => {
 					callback(false, accounts);
@@ -85,7 +85,7 @@ router.get('/userData', function (req, res) {
 
 });
 router.get('/accountDetails', function (req, res, next) {
-	let account_number = req.header('account_number');
+	var account_number = req.header('account_number');
 	if (!account_number) {
 		res.status(500).send(JSON.stringify('account_number missing'));
 		return next();
