@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions';
 import ApiUtils from '../../utils/ApiUtils';
-import * as userActions from './user';
 
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -19,15 +18,15 @@ export function login(loginInfo) {
             body: JSON.stringify(loginInfo),
         };
 
-        return ApiUtils.fetchResponse(url, settings)
+        return ApiUtils.fetchResponse(url, settings, dispatch)
             .then(json => {
                 localStorage.setItem('sessionToken', json.token);
                 return dispatch(loginSuccess(json.token));
-                //return dispatch(userActions.getUser());
             })
             .catch(err => {
+                console.log('login error');
                 localStorage.removeItem('sessionToken');
-                return dispatch(loginFailure(ApiUtils.parseErrorStrings(err)));
+                return dispatch(loginFailure(err));
             });
     };
 }
@@ -46,14 +45,15 @@ export function logout() {
         let url = 'logout';
         let settings = { method: 'POST', };
 
-        return ApiUtils.fetchResponse(url, settings)
+        return ApiUtils.fetchResponse(url, settings, dispatch)
             .then(json => {
                 localStorage.removeItem('sessionToken');
                 return dispatch(logoutSuccess());
             })
             .catch(err => {
                 localStorage.removeItem('sessionToken');
-                return dispatch(logoutFailure(ApiUtils.parseErrorStrings(err)));
+                console.log('login reducer calling logout');
+                return dispatch(logoutFailure(err));
             });
     };
 }

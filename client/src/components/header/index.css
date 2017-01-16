@@ -3,54 +3,83 @@
   height: 150px;
   margin: 0;
   padding: 20px;
-  color: #D7E2E5;
+  color: #EEEEEE;
+  /*color: white;*/
   display: flex;
   flex-basis: 100%;
   justify-content: space-between;
   align-items: flex-start;
 }
 
+.App-header a {
+    text-decoration: underline;
+    color: #EEEEEE;
+    font-size: 12px;
+}
+
 .header-cash {
     /*border: 1px solid white;*/
-    font-size: 11px;
+    font-size: 12px;
     flex-basis: 25%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
-.header-name {
+.header-user {
     /*border: 1px solid white;*/
-    flex-basis: 50%;
+    font-size: 11px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: space-around;
 }
 
 .header-portfolio {
     /*border: 1px solid white;*/
-    font-size: 11px;
-    flex-basis: 25%;
+    font-size: 14px;
+    flex-basis: 400px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .row {
-    /*border: 1px solid white;*/
     display: flex;
     width: 100%;
+    padding: 2px;
     flex-direction: row;
-    justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .val {
-    /*border: 1px solid white;*/
     text-align: right;
     min-width: 75px;
     max-width: 75px;
+}
+
+.padded {
+    padding: 5px;
+}
+.start {
+    justify-content: flex-start;
+}
+.end {
+    justify-content: flex-end;
+}
+.center {
+    justify-content: center;
+}
+.max {
+    flex-basis: 95%;
+}
+.no-wrap{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.space-around {
+    display: flex;
+    justify-content: space-around;
 }

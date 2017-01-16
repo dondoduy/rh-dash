@@ -1,10 +1,12 @@
 import login from './login';
-import user from './user';
+import userData from './userData';
+import accountDetails from './accountDetails';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
     login, 
-    user,
+    userData,
+    accountDetails,
 });
 
 export default rootReducer;
