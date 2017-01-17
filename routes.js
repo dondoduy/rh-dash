@@ -137,18 +137,7 @@ router.get('/accountDetails', function (req, res, next) {
 		});
 });
 router.get('/quotes', function (req, res) {
-	// var symbols = req.query.symbols;
-	// console.log(typeof(symbols));
-	// console.log(!symbols);
-	// //console.log(symbols.length);
-	// if (!symbols || Object.keys(symbols).length <= 0) {
-	// 	res.status(401).send('No symbols found');
-	// 	return;
-	// }
-	// console.log(Object.keys(symbols).length);
-	// symbols = symbols.split(',');
-	//var url = apiBase + 'quotes/?symbols=' + symbols.join();
-var url = apiBase + 'quotes/?' + JSON.stringify(req.query.symbols);
+var url = apiBase + 'quotes/?' + req.originalUrl.split("?").pop();
 	console.log(url);
 
 	request
