@@ -42,7 +42,7 @@ class App extends Component {
       <div className="App">
         <Header />
         {!isLoggedIn && <Login />}
-        {isLoggedIn && <Dashboard />}
+        {isLoggedIn && <Dashboard positions={this.props.accountDetails.positions}/>}
       </div>
     );
   }
@@ -52,6 +52,7 @@ function mapStateToProps(state) {
   return {
     login: state.login,
     userData: state.userData,
+    accountDetails: state.accountDetails,
   }
 }
 

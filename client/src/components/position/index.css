@@ -1,0 +1,8 @@
+div.position {
+    border: 1px solid black;
+    flex-basis: 90%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-content: center;
+}
