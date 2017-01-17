@@ -116,7 +116,7 @@ router.get('/accountDetails', function (req, res, next) {
 		},
 		// get positions info
 		function (callback) {
-			var url = apiBase + `accounts/${account_number}/positions/`;
+			var url = apiBase + `accounts/${account_number}/positions/?nonzero=true`;
 			var headers = { 'authorization': req.header('authorization') };
 			request
 				.get(url)
@@ -135,6 +135,30 @@ router.get('/accountDetails', function (req, res, next) {
 				positions: results[2].results,
 			});
 		});
+});
+router.get('/quotes', function (req, res) {
+	// var symbols = req.query.symbols;
+	// console.log(typeof(symbols));
+	// console.log(!symbols);
+	// //console.log(symbols.length);
+	// if (!symbols || Object.keys(symbols).length <= 0) {
+	// 	res.status(401).send('No symbols found');
+	// 	return;
+	// }
+	// console.log(Object.keys(symbols).length);
+	// symbols = symbols.split(',');
+	//var url = apiBase + 'quotes/?symbols=' + symbols.join();
+var url = apiBase + 'quotes/?' + JSON.stringify(req.query.symbols);
+	console.log(url);
+
+	request
+		.get(url)
+		.set('authorization', req.header('authorization'))
+		.end(function (error, response) {
+			if (error) { console.log(error.response.text); res.status(error.status).send(error.response.text); return; }
+			res.status(response.statusCode).json(response.body);
+		});
+
 });
 router.get('/', function (req, res) {
 	res.json({ message: 'API GET works' });
