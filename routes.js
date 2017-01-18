@@ -133,12 +133,14 @@ router.get('/accountDetails', function (req, res, next) {
 				account: results[0],
 				portfolio: results[1],
 				positions: results[2].results,
+				quotes: null,
+				instruments: null,
 			});
 		});
 });
+
 router.get('/quotes', function (req, res) {
-var url = apiBase + 'quotes/?' + req.originalUrl.split("?").pop();
-	console.log(url);
+	var url = apiBase + 'quotes/?' + req.originalUrl.split("?").pop();
 
 	request
 		.get(url)

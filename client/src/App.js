@@ -42,7 +42,7 @@ class App extends Component {
       <div className="App">
         <Header />
         {!isLoggedIn && <Login />}
-        {isLoggedIn && <Dashboard positions={this.props.accountDetails.positions}/>}
+        {isLoggedIn && <Dashboard accountDetails={this.props.accountDetails}/>}
       </div>
     );
   }
