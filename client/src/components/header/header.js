@@ -5,6 +5,7 @@ import * as userDataActions from '../../redux/actions/userData';
 import * as accountDetailsActions from '../../redux/actions/accountDetails';
 import defaultState from '../../redux/store/defaultState';
 import dollar from '../../utils/dollar';
+import { getSelectedAccount } from '../../utils/accounts';
 import './index.css';
 
 class Header extends Component {
@@ -35,6 +36,7 @@ class Header extends Component {
         if (!this.isLoggedIn()) { return null; }
         if (!this.props.userData || !this.props.userData.accounts || this.props.userData.accounts.length <= 0) { return null; }
         let selectedAccount = this.props.userData.selectedAccount ? this.props.userData.selectedAccount : '';
+
         return (
             <div className="header-user">
                 <div className="row end">
@@ -56,19 +58,18 @@ class Header extends Component {
     }
 
     renderAccountDetails = () => {
-        if (!this.props.accountDetails || !this.props.accountDetails.account) {
-            return null;
-        }
+        let account = getSelectedAccount(this.props.userData.accounts, this.props.userData.selectedAccount);
+        if (!account) { return null; }
 
         //TODO: ADD FETCHING SPINNER
 
         return (
             <div className="header-cash">
-                <div className="row end"><div>Cash:</div><div className="val">{dollar(this.props.accountDetails.account.cash)}</div></div>
-                <div className="row end">Available For Withdrawal:<div className="val">{dollar(this.props.accountDetails.account.cash_available_for_withdrawal)}</div></div>
-                <div className="row end">Uncleared Deposits:<div className="val">{dollar(this.props.accountDetails.account.uncleared_deposits)}</div></div>
-                <div className="row end">Unsettled Funds:<div className="val">{dollar(this.props.accountDetails.account.unsettled_funds)}</div></div>
-                <div className="row end">Buying Power:<div className="val">{dollar(this.props.accountDetails.account.buying_power)}</div></div>
+                <div className="row end"><div>Cash:</div><div className="val">{dollar(account.cash)}</div></div>
+                <div className="row end">Available For Withdrawal:<div className="val">{dollar(account.cash_available_for_withdrawal)}</div></div>
+                <div className="row end">Uncleared Deposits:<div className="val">{dollar(account.uncleared_deposits)}</div></div>
+                <div className="row end">Unsettled Funds:<div className="val">{dollar(account.unsettled_funds)}</div></div>
+                <div className="row end">Buying Power:<div className="val">{dollar(account.buying_power)}</div></div>
             </div>
         );
     }
@@ -77,6 +78,9 @@ class Header extends Component {
         if (!this.props.accountDetails.portfolio) {
             return null;
         }
+
+        let account = getSelectedAccount(this.props.userData.accounts, this.props.userData.selectedAccount);
+        let cash = (account) ? account.cash : 0;
 
         //TODO: ADD FETCHING SPINNER
 
@@ -90,7 +94,7 @@ class Header extends Component {
                         Stocks: {dollar(this.props.accountDetails.portfolio.market_value)}
                     </div>
                     <div className="no-wrap">
-                        Cash: {dollar(this.props.accountDetails.account.cash)}
+                        Cash: {dollar(cash)}
                     </div>
                 </div>
             </div>

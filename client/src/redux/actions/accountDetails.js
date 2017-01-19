@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import ApiUtils from '../../utils/ApiUtils';
+import * as instrumentActions from './instruments';
 
 export const FETCH_ACCOUNTDETAILS_REQUESTED = ' ACCOUNTDETAILS_REQUESTED';
 export const FETCH_ACCOUNTDETAILS_SUCCESS = ' ACCOUNTDETAILS_SUCCESS';
@@ -14,12 +15,17 @@ export function getAccountDetails(account_number) {
         let url = 'accountDetails';
         let settings = {
             method: 'GET',
-            headers: new Headers({'account_number': account_number}),
+            headers: new Headers({ 'account_number': account_number }),
         };
 
         return ApiUtils.fetchResponse(url, settings, dispatch)
             .then(json => {
-                return dispatch(fetchAccountDetailsSuccess(json));
+                dispatch(fetchAccountDetailsSuccess(json));
+
+                let instrument_urls = json.positions.map(function (position) {
+                    return position.instrument;
+                });                
+                return dispatch(instrumentActions.getInstruments(instrument_urls));
             })
             .catch(err => {
                 return dispatch(fetchAccountDetailsFailure(err));

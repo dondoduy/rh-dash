@@ -51,7 +51,6 @@ router.post('/logout', function (req, res) {
 		});
 });
 router.get('/userData', function (req, res) {
-	console.log('userData request received');
 	async.parallel([
 		// get user info
 		function (callback) {
@@ -92,17 +91,6 @@ router.get('/accountDetails', function (req, res, next) {
 	}
 
 	async.parallel([
-		// get account info
-		function (callback) {
-			var url = apiBase + `accounts/${account_number}/`;
-			request
-				.get(url)
-				.set('authorization', req.header('authorization'))
-				.end(function (error, response) {
-					if (error) { callback(error); return; }
-					callback(false, response.body);
-				});
-		},
 		// get portfolio info
 		function (callback) {
 			var url = apiBase + `accounts/${account_number}/portfolio/`;
@@ -130,15 +118,44 @@ router.get('/accountDetails', function (req, res, next) {
 		function (err, results) {
 			if (err) { console.log(err); res.status(err.status).send(err.response.text); return; }
 			res.send({
-				account: results[0],
-				portfolio: results[1],
-				positions: results[2].results,
+				portfolio: results[0],
+				positions: results[1].results,
 				quotes: null,
 				instruments: null,
 			});
 		});
 });
+router.get('/instruments', function (req, res, next) {
+	var url_list = req.header('url_list');
 
+	if (!url_list) {	
+		res.status(500).send(JSON.stringify('url_list missing'));
+		return next();
+	}
+
+	url_list = Array.from(JSON.parse(url_list));
+	if (!Array.isArray(url_list) || url_list.length <= 0) { return next(); }
+
+	var function_list = url_list.map(function (url) {
+		return function (callback) {
+			request
+				.get(url)
+				.set('authorization', req.header('authorization'))
+				.end(function (error, response) {
+					if (error) { console.log(url + ' err: ' + error); callback(error); return; }
+					callback(false, response.body);
+				});
+		};
+	});
+
+	async.parallel(function_list,
+		function (err, results) {
+			if (err) { console.log(err); res.status(err.status).send(err.response.text); return; }
+
+			res.send(results);
+		});
+
+});
 router.get('/quotes', function (req, res) {
 	var url = apiBase + 'quotes/?' + req.originalUrl.split("?").pop();
 
