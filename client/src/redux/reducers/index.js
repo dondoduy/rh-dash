@@ -2,6 +2,7 @@ import login from './login';
 import userData from './userData';
 import accountDetails from './accountDetails';
 import instruments from './instruments';
+import quotes from './quotes';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
     userData,
     accountDetails,
     instruments,
+    quotes,
 });
 
 export default rootReducer;

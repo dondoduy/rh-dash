@@ -151,8 +151,8 @@ router.get('/instruments', function (req, res, next) {
 	async.parallel(function_list,
 		function (err, results) {
 			if (err) { console.log(err); res.status(err.status).send(err.response.text); return; }
-
-			res.send(results);
+			res.status(200).json(results);
+			//res.send(results);
 		});
 
 });
